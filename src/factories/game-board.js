@@ -68,7 +68,10 @@ const GameBoard = (size = 10) => {
     validateShipCoordinates(coordinates) {
       let valid = true;
       coordinates.forEach((coordinate) => {
-        if (!validateCoordinates(coordinate, this.size)) {
+        if (
+          !validateCoordinates(coordinate, this.size) ||
+          this.findTile(coordinate).ship
+        ) {
           valid = false;
         }
       });
