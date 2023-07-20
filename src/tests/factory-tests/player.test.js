@@ -1,4 +1,4 @@
-import Player from '../player';
+import Player from '../../factories/player';
 
 describe('Computer-player', () => {
   test('should be able to pick a random move from given possibilities', () => {

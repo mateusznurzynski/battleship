@@ -1,4 +1,4 @@
-import Ship from '../ship';
+import Ship from '../../factories/ship';
 
 describe('Ship', () => {
   test('should increase the number of hits', () => {
