@@ -126,6 +126,7 @@ describe('GameBoard', () => {
 
     test('should be able to tell if all the ships are sunk', () => {
       const gameBoard = GameBoard();
+      expect(gameBoard.isEverythingSunk()).toBeTruthy();
       gameBoard.placeShip([2, 5], 3, 'right');
       gameBoard.placeShip([3, 5], 3, 'left');
       gameBoard.receiveHit([2, 5]);
