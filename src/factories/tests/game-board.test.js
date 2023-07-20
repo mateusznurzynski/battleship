@@ -82,4 +82,31 @@ describe('GameBoard', () => {
     const tile = gameBoard.findTile([2, 9]);
     expect(tile.ship).toBeNull();
   });
+
+  test('should be able to receive attacks (hit)', () => {
+    const gameBoard = GameBoard();
+    gameBoard.placeShip([2, 5], 3, 'right');
+    gameBoard.receiveHit([2, 6]);
+
+    const ship = gameBoard.findTile([2, 5]).ship;
+    expect(ship.timesHit).toBe(1);
+  });
+
+  test('should be able to receive attacks (miss)', () => {
+    const gameBoard = GameBoard();
+    gameBoard.placeShip([2, 5], 3, 'right');
+    gameBoard.receiveHit([2, 4]);
+
+    const ship = gameBoard.findTile([2, 5]).ship;
+    expect(ship.timesHit).toBe(0);
+    expect(gameBoard.attackedCoordinates[0]).toEqual([2, 4]);
+  });
+
+  test('should not be able to receive attacks on the same tile twice', () => {
+    const gameBoard = GameBoard();
+    gameBoard.placeShip([2, 5], 3, 'right');
+    gameBoard.receiveHit([2, 6]);
+
+    expect(gameBoard.receiveHit([2, 6])).toBeFalsy();
+  });
 });

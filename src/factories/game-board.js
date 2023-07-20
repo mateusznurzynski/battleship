@@ -49,19 +49,26 @@ const GameBoard = (size = 10) => {
     return coordinates;
   };
 
+  const validateCoordinates = (coordinate, shipSize) => {
+    const valid =
+      coordinate[0] >= 1 &&
+      coordinate[0] <= shipSize &&
+      coordinate[1] >= 1 &&
+      coordinate[1] <= shipSize;
+
+    return valid;
+  };
+
   const returnedObject = {
     tiles,
     size,
+    attackedCoordinates: [],
+    ships: [],
 
     validateShipCoordinates(coordinates) {
       let valid = true;
       coordinates.forEach((coordinate) => {
-        if (
-          coordinate[0] < 1 ||
-          coordinate[0] > this.size ||
-          coordinate[1] < 1 ||
-          coordinate[1] > this.size
-        ) {
+        if (!validateCoordinates(coordinate, this.size)) {
           valid = false;
         }
       });
@@ -70,7 +77,7 @@ const GameBoard = (size = 10) => {
     },
 
     findTile(coordinates) {
-      const tileIndex = (coordinates[0] - 1) * 10 + (coordinates[1] - 1);
+      const tileIndex = (coordinates[0] - 1) * this.size + (coordinates[1] - 1);
       const tile = this.tiles[tileIndex];
 
       return tile;
@@ -89,11 +96,40 @@ const GameBoard = (size = 10) => {
         return false;
       }
       const newShip = Ship(shipSize);
+      this.ships.push(newShip);
 
       coordinates.forEach((coordinate) => {
         const tile = this.findTile(coordinate);
         tile.ship = newShip;
       });
+      return true;
+    },
+
+    validateHit(coordinates) {
+      if (!validateCoordinates(coordinates, this.size)) {
+        return false;
+      }
+      const alreadyHit = this.attackedCoordinates.some(
+        (coord) => coord[0] === coordinates[0] && coord[1] === coordinates[1]
+      );
+      if (alreadyHit) {
+        return false;
+      }
+
+      return true;
+    },
+
+    receiveHit(coordinates) {
+      if (!this.validateHit(coordinates)) {
+        return false;
+      }
+      this.attackedCoordinates.push(coordinates);
+
+      const tile = this.findTile(coordinates);
+      if (!tile.ship) {
+        return false;
+      }
+      tile.ship.hit();
       return true;
     },
   };
