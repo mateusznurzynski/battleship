@@ -4,6 +4,7 @@ const getRandomInt = (max) => Math.floor(Math.random() * max);
 
 const Player = (isHuman, name = 'Player') => {
   const gameBoard = GameBoard(10);
+
   return {
     isHuman,
     name,

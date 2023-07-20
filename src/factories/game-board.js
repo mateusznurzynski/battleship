@@ -59,7 +59,7 @@ const GameBoard = (size = 10) => {
     return valid;
   };
 
-  const returnedObject = {
+  return {
     tiles,
     size,
     attackedCoordinates: [],
@@ -145,8 +145,6 @@ const GameBoard = (size = 10) => {
       return !shipRemaining;
     },
   };
-
-  return returnedObject;
 };
 
 export default GameBoard;
