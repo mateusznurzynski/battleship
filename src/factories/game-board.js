@@ -132,6 +132,15 @@ const GameBoard = (size = 10) => {
       tile.ship.hit();
       return true;
     },
+
+    isEverythingSunk() {
+      if (this.ships.length <= 0) {
+        return true;
+      }
+
+      const shipRemaining = this.ships.some((ship) => !ship.sunk);
+      return !shipRemaining;
+    },
   };
 
   return returnedObject;

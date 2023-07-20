@@ -109,4 +109,19 @@ describe('GameBoard', () => {
 
     expect(gameBoard.receiveHit([2, 6])).toBeFalsy();
   });
+
+  test('should be able to tell if all the ships are sunk', () => {
+    const gameBoard = GameBoard();
+    gameBoard.placeShip([2, 5], 3, 'right');
+    gameBoard.placeShip([3, 5], 3, 'left');
+    gameBoard.receiveHit([2, 5]);
+    gameBoard.receiveHit([2, 6]);
+    gameBoard.receiveHit([2, 7]);
+    gameBoard.receiveHit([3, 5]);
+    gameBoard.receiveHit([3, 4]);
+    expect(gameBoard.isEverythingSunk()).toBeFalsy();
+    gameBoard.receiveHit([3, 3]);
+
+    expect(gameBoard.isEverythingSunk()).toBeTruthy();
+  });
 });
