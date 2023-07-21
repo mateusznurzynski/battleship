@@ -25,8 +25,60 @@ html {
 }
 
 body {
-  padding: 10px;
   background-color: var(--dark);
+  background-image: url('./img/background.jpg');
+  background-size: cover;
   color: white;
   font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+}
+
+.overlay {
+  height: 100vh;
+  height: 100svh;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+}
+
+.title {
+  font-size: 3rem;
+}
+
+.gameboards {
+  margin-top: 50px;
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.gameboard {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 1px;
+}
+
+.tile {
+  height: 32px;
+  width: 32px;
+  border: 1px white solid;
+}
+
+.gameboard-player .tile {
+  border-color: var(--success);
+}
+
+.gameboard-player .tile:hover {
+  border-color: greenyellow;
+}
+
+.gameboard-computer .tile {
+  border-color: var(--danger);
+}
+
+.gameboard-computer .tile:hover {
+  border-color: orange;
 }
