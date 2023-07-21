@@ -57,7 +57,6 @@ body {
 
 .gameboard {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
   gap: 1px;
 }
 
