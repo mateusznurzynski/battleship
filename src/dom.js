@@ -1,6 +1,7 @@
 import PubSub from 'pubsub-js';
 
 const gameBoardsElement = document.querySelector('.gameboards');
+const statusElement = document.querySelector('.status');
 
 const handleEnemyTileClick = (e) => {
   PubSub.publish('enemyTileClicked', {
@@ -54,6 +55,10 @@ const createTileElement = (tile, showShips = false) => {
   return tileElement;
 };
 
+const changeStatus = (statusMessage) => {
+  statusElement.innerText = statusMessage;
+};
+
 const renderGameBoards = (playerBoard, computerBoard, gridSize = 10) => {
   gameBoardsElement.innerHTML = '';
   const playerTiles = playerBoard.tiles;
@@ -85,4 +90,4 @@ const renderGameBoards = (playerBoard, computerBoard, gridSize = 10) => {
   gameBoardsElement.appendChild(computerGameBoardElement);
 };
 
-export { renderGameBoards, toggleTileEventListeners };
+export { renderGameBoards, toggleTileEventListeners, changeStatus };

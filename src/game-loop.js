@@ -1,9 +1,13 @@
 import PubSub from 'pubsub-js';
 import Player from './factories/player';
-import { renderGameBoards, toggleTileEventListeners } from './dom';
+import {
+  renderGameBoards,
+  toggleTileEventListeners,
+  changeStatus,
+} from './dom';
 
 const BOARD_SIZE = 10;
-const TURN_DELAY = 200; // in ms
+const TURN_DELAY = 1000; // in ms
 
 let playerTurn = false;
 
@@ -44,8 +48,9 @@ const changeTurn = () => {
     return false;
   }
   playerTurn = !playerTurn;
-
   toggleTileEventListeners(playerTurn);
+  changeStatus(`It's ${playerTurn ? 'your' : "the computer's"} turn!`);
+
   return playerTurn;
 };
 
@@ -71,13 +76,10 @@ const tryToAttack = (msg, data) => {
 };
 
 const gameEnd = ({ winner }) => {
-  console.log(`${winner} won!`);
+  changeStatus(`Game ended! Winner: ${winner}`);
 };
 
-const gameStart = () => {
-  populateBoards();
-  renderGameBoards(humanPlayer.gameBoard, computerPlayer.gameBoard);
-  toggleTileEventListeners(true);
+const initPubSub = () => {
   PubSub.subscribe('enemyTileClicked', tryToAttack);
   PubSub.subscribe('userAttacked', () => {
     renderGameBoards(humanPlayer.gameBoard, computerPlayer.gameBoard);
@@ -92,7 +94,15 @@ const gameStart = () => {
     PubSub.clearAllSubscriptions();
     gameEnd(data);
   });
-  playerTurn = true;
+};
+
+const gameStart = () => {
+  initPubSub();
+  populateBoards();
+  renderGameBoards(humanPlayer.gameBoard, computerPlayer.gameBoard);
+  toggleTileEventListeners(true);
+
+  changeTurn();
 };
 
 export default gameStart;
