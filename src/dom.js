@@ -77,8 +77,6 @@ const renderGameBoards = (playerBoard, computerBoard, gridSize = 10) => {
 
   gameBoardsElement.appendChild(playerGameBoardElement);
   gameBoardsElement.appendChild(computerGameBoardElement);
-
-  toggleTileEventListeners(true);
 };
 
-export default renderGameBoards;
+export { renderGameBoards, toggleTileEventListeners };

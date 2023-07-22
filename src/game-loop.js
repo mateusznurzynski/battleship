@@ -1,6 +1,6 @@
 import PubSub from 'pubsub-js';
 import Player from './factories/player';
-import renderGameBoards from './dom';
+import { renderGameBoards, toggleTileEventListeners } from './dom';
 
 const BOARD_SIZE = 10;
 
@@ -23,11 +23,21 @@ const populateBoards = () => {
   });
 };
 
+const changeTurn = (msg, data) => {
+  playerTurn = !playerTurn;
+
+  toggleTileEventListeners(playerTurn);
+  return playerTurn;
+};
+
 const tryToAttack = (msg, data) => {
   if (!playerTurn) {
     return false;
   }
   const attacked = computerPlayer.gameBoard.receiveHit([data.row, data.column]);
+  if (attacked) {
+    PubSub.publish('userAttacked', [data.row, data.column]);
+  }
 
   return attacked;
 };
@@ -35,7 +45,9 @@ const tryToAttack = (msg, data) => {
 const gameStart = () => {
   populateBoards();
   renderGameBoards(humanPlayer.gameBoard, computerPlayer.gameBoard);
+  toggleTileEventListeners(true);
   PubSub.subscribe('enemyTileClicked', tryToAttack);
+  PubSub.subscribe('userAttacked', changeTurn);
   playerTurn = true;
 };
 

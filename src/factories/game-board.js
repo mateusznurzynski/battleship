@@ -130,7 +130,7 @@ const GameBoard = (size = 10) => {
 
       const tile = this.findTile(coordinates);
       if (!tile.ship) {
-        return false;
+        return true;
       }
       tile.ship.hit();
       return true;
