@@ -43,8 +43,10 @@ const createTileElement = (tile, showShips = false) => {
 
   if (tile.attacked) {
     tileElement.toggleAttribute('attacked', true);
-  }
-  if (showShips) {
+    if (tile.ship) {
+      tileElement.setAttribute('ship', 'attacked');
+    }
+  } else if (showShips) {
     if (tile.ship) {
       tileElement.setAttribute('ship', 'alive');
     }

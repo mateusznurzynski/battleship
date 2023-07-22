@@ -86,7 +86,10 @@ body {
 }
 
 .tile[ship='alive'] {
-  background-color: rgba(153, 255, 0, 0.5);
+  background-color: rgba(153, 255, 0, 0.65);
+}
+.tile[ship='attacked'] {
+  background-color: rgba(255, 0, 0, 0.65);
 }
 
 .tile[attacked]::after {
