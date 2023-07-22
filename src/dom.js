@@ -40,6 +40,10 @@ const createTileElement = (tile, showShips = false) => {
   const tileElement = createDomElement('div', 'tile');
   tileElement.setAttribute('data-row', tile.row);
   tileElement.setAttribute('data-column', tile.column);
+
+  if (tile.attacked) {
+    tileElement.toggleAttribute('attacked', true);
+  }
   if (showShips) {
     if (tile.ship) {
       tileElement.setAttribute('ship', 'alive');

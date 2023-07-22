@@ -48,6 +48,9 @@ const gameStart = () => {
   toggleTileEventListeners(true);
   PubSub.subscribe('enemyTileClicked', tryToAttack);
   PubSub.subscribe('userAttacked', changeTurn);
+  PubSub.subscribe('userAttacked', () => {
+    renderGameBoards(humanPlayer.gameBoard, computerPlayer.gameBoard);
+  });
   playerTurn = true;
 };
 

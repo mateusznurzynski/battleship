@@ -64,6 +64,9 @@ body {
   height: 32px;
   width: 32px;
   border: 1px white solid;
+  display: flex;
+  justify-items: center;
+  align-items: center;
 }
 
 .gameboard-player .tile {
@@ -84,4 +87,12 @@ body {
 
 .tile[ship='alive'] {
   background-color: rgba(153, 255, 0, 0.5);
+}
+
+.tile[attacked]::after {
+  content: 'X';
+  font-weight: bold;
+  color: white;
+  width: 100%;
+  text-align: center;
 }
