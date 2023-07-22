@@ -4,7 +4,7 @@ const Tile = (row, column, ship = null) => {
   if (!row || !column) {
     throw Error('Invalid coordinates!');
   }
-  return { row, column, ship };
+  return { row, column, ship, attacked: false };
 };
 
 const GameBoard = (size = 10) => {
@@ -129,6 +129,7 @@ const GameBoard = (size = 10) => {
       this.attackedCoordinates.push(coordinates);
 
       const tile = this.findTile(coordinates);
+      tile.attacked = true;
       if (!tile.ship) {
         return true;
       }

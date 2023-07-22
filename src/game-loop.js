@@ -23,7 +23,7 @@ const populateBoards = () => {
   });
 };
 
-const changeTurn = (msg, data) => {
+const changeTurn = () => {
   playerTurn = !playerTurn;
 
   toggleTileEventListeners(playerTurn);
