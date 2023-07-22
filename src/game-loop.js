@@ -30,9 +30,11 @@ const changeTurn = () => {
   return playerTurn;
 };
 
-const performComputerTurn = () => {
-  const computerMove = computerPlayer.performRandomAttack(humanPlayer);
-  PubSub.publish('computerAttacked', computerMove);
+const performComputerTurn = (delay = 1000) => {
+  setTimeout(() => {
+    const computerMove = computerPlayer.performRandomAttack(humanPlayer);
+    PubSub.publish('computerAttacked', computerMove);
+  }, delay);
 };
 
 const tryToAttack = (msg, data) => {
@@ -55,7 +57,7 @@ const gameStart = () => {
   PubSub.subscribe('userAttacked', () => {
     renderGameBoards(humanPlayer.gameBoard, computerPlayer.gameBoard);
     changeTurn();
-    performComputerTurn();
+    performComputerTurn(1000);
   });
   PubSub.subscribe('computerAttacked', () => {
     renderGameBoards(humanPlayer.gameBoard, computerPlayer.gameBoard);
