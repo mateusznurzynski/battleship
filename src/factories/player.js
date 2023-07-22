@@ -44,6 +44,7 @@ const Player = (isHuman, boardSize = 10) => {
       this.possibleTargets.splice(index, 1);
 
       enemyPlayer.gameBoard.receiveHit(randomAttack);
+      return randomAttack;
     },
   };
 };

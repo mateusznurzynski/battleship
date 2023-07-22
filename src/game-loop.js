@@ -30,6 +30,11 @@ const changeTurn = () => {
   return playerTurn;
 };
 
+const performComputerTurn = () => {
+  const computerMove = computerPlayer.performRandomAttack(humanPlayer);
+  PubSub.publish('computerAttacked', computerMove);
+};
+
 const tryToAttack = (msg, data) => {
   if (!playerTurn) {
     return false;
@@ -47,9 +52,14 @@ const gameStart = () => {
   renderGameBoards(humanPlayer.gameBoard, computerPlayer.gameBoard);
   toggleTileEventListeners(true);
   PubSub.subscribe('enemyTileClicked', tryToAttack);
-  PubSub.subscribe('userAttacked', changeTurn);
   PubSub.subscribe('userAttacked', () => {
     renderGameBoards(humanPlayer.gameBoard, computerPlayer.gameBoard);
+    changeTurn();
+    performComputerTurn();
+  });
+  PubSub.subscribe('computerAttacked', () => {
+    renderGameBoards(humanPlayer.gameBoard, computerPlayer.gameBoard);
+    changeTurn();
   });
   playerTurn = true;
 };
