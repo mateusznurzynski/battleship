@@ -12,6 +12,18 @@ const createDomElement = (
   return element;
 };
 
+const createTileElement = (tile, showShips = false) => {
+  const tileElement = createDomElement('div', 'tile');
+  tileElement.setAttribute('data-row', tile.row);
+  tileElement.setAttribute('data-column', tile.column);
+  if (showShips) {
+    if (tile.ship) {
+      tileElement.setAttribute('ship', 'alive');
+    }
+  }
+  return tileElement;
+};
+
 const renderGameBoards = (playerBoard, computerBoard, gridSize = 10) => {
   gameBoardsElement.innerHTML = '';
   const playerTiles = playerBoard.tiles;
@@ -22,9 +34,7 @@ const renderGameBoards = (playerBoard, computerBoard, gridSize = 10) => {
     'gameboard gameboard-player'
   );
   playerTiles.forEach((tile) => {
-    const tileElement = createDomElement('div', 'tile');
-    tileElement.setAttribute('data-row', tile.row);
-    tileElement.setAttribute('data-column', tile.column);
+    const tileElement = createTileElement(tile, true);
     playerGameBoardElement.appendChild(tileElement);
   });
 
@@ -33,9 +43,7 @@ const renderGameBoards = (playerBoard, computerBoard, gridSize = 10) => {
     'gameboard gameboard-computer'
   );
   computerTiles.forEach((tile) => {
-    const tileElement = createDomElement('div', 'tile');
-    tileElement.setAttribute('data-row', tile.row);
-    tileElement.setAttribute('data-column', tile.column);
+    const tileElement = createTileElement(tile, false);
     computerGameBoardElement.appendChild(tileElement);
   });
 

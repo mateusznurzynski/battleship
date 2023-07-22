@@ -81,3 +81,7 @@ body {
 .gameboard-computer .tile:hover {
   border-color: orange;
 }
+
+.tile[ship='alive'] {
+  background-color: rgba(153, 255, 0, 0.5);
+}
