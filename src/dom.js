@@ -1,4 +1,28 @@
+import PubSub from 'pubsub-js';
+
 const gameBoardsElement = document.querySelector('.gameboards');
+
+const handleEnemyTileClick = (e) => {
+  PubSub.publish('enemyTileClicked', {
+    row: e.target.getAttribute('data-row'),
+    column: e.target.getAttribute('data-column'),
+  });
+};
+
+const toggleTileEventListeners = (boolean) => {
+  const enemyTiles = gameBoardsElement.querySelectorAll(
+    '.gameboard-computer > .tile'
+  );
+  if (boolean) {
+    enemyTiles.forEach((tile) => {
+      tile.addEventListener('click', handleEnemyTileClick);
+    });
+  } else {
+    enemyTiles.forEach((tile) => {
+      tile.removeEventListener('click', handleEnemyTileClick);
+    });
+  }
+};
 
 const createDomElement = (
   elementType = 'div',
@@ -43,7 +67,8 @@ const renderGameBoards = (playerBoard, computerBoard, gridSize = 10) => {
     'gameboard gameboard-computer'
   );
   computerTiles.forEach((tile) => {
-    const tileElement = createTileElement(tile, false);
+    const tileElement = createTileElement(tile, true);
+    // for now the player can see all ships
     computerGameBoardElement.appendChild(tileElement);
   });
 
@@ -52,6 +77,8 @@ const renderGameBoards = (playerBoard, computerBoard, gridSize = 10) => {
 
   gameBoardsElement.appendChild(playerGameBoardElement);
   gameBoardsElement.appendChild(computerGameBoardElement);
+
+  toggleTileEventListeners(true);
 };
 
 export default renderGameBoards;

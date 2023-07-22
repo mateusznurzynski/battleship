@@ -1,3 +1,4 @@
+import PubSub from 'pubsub-js';
 import Player from './factories/player';
 import renderGameBoards from './dom';
 
@@ -22,10 +23,20 @@ const populateBoards = () => {
   });
 };
 
+const tryToAttack = (msg, data) => {
+  if (!playerTurn) {
+    return false;
+  }
+  const attacked = computerPlayer.gameBoard.receiveHit([data.row, data.column]);
+
+  return attacked;
+};
+
 const gameStart = () => {
   populateBoards();
   renderGameBoards(humanPlayer.gameBoard, computerPlayer.gameBoard);
-  playerTurn = !playerTurn;
+  PubSub.subscribe('enemyTileClicked', tryToAttack);
+  playerTurn = true;
 };
 
 export default gameStart;
