@@ -3,6 +3,7 @@ import Player from './factories/player';
 import { renderGameBoards, toggleTileEventListeners } from './dom';
 
 const BOARD_SIZE = 10;
+const TURN_DELAY = 200; // in ms
 
 let playerTurn = false;
 
@@ -23,7 +24,25 @@ const populateBoards = () => {
   });
 };
 
+const checkWinCondition = () => {
+  if (humanPlayer.gameBoard.isEverythingSunk()) {
+    PubSub.publish('gameEnded', { winner: 'computer' });
+    return true;
+  }
+  if (computerPlayer.gameBoard.isEverythingSunk()) {
+    PubSub.publish('gameEnded', { winner: 'player' });
+    return true;
+  }
+
+  return false;
+};
+
 const changeTurn = () => {
+  if (checkWinCondition()) {
+    playerTurn = false;
+    toggleTileEventListeners(false);
+    return false;
+  }
   playerTurn = !playerTurn;
 
   toggleTileEventListeners(playerTurn);
@@ -31,10 +50,12 @@ const changeTurn = () => {
 };
 
 const performComputerTurn = (delay = 1000) => {
-  setTimeout(() => {
-    const computerMove = computerPlayer.performRandomAttack(humanPlayer);
-    PubSub.publish('computerAttacked', computerMove);
-  }, delay);
+  if (!playerTurn) {
+    setTimeout(() => {
+      const computerMove = computerPlayer.performRandomAttack(humanPlayer);
+      PubSub.publish('computerAttacked', computerMove);
+    }, delay);
+  }
 };
 
 const tryToAttack = (msg, data) => {
@@ -49,6 +70,10 @@ const tryToAttack = (msg, data) => {
   return attacked;
 };
 
+const gameEnd = ({ winner }) => {
+  console.log(`${winner} won!`);
+};
+
 const gameStart = () => {
   populateBoards();
   renderGameBoards(humanPlayer.gameBoard, computerPlayer.gameBoard);
@@ -57,11 +82,15 @@ const gameStart = () => {
   PubSub.subscribe('userAttacked', () => {
     renderGameBoards(humanPlayer.gameBoard, computerPlayer.gameBoard);
     changeTurn();
-    performComputerTurn(1000);
+    performComputerTurn(TURN_DELAY);
   });
   PubSub.subscribe('computerAttacked', () => {
     renderGameBoards(humanPlayer.gameBoard, computerPlayer.gameBoard);
     changeTurn();
+  });
+  PubSub.subscribe('gameEnded', (msg, data) => {
+    PubSub.clearAllSubscriptions();
+    gameEnd(data);
   });
   playerTurn = true;
 };
