@@ -1,13 +1,12 @@
 import GameBoard from '../../factories/game-board';
 
 describe('GameBoard', () => {
+  test('should create a specified number of tiles', () => {
+    const gameBoard = GameBoard(10);
+
+    expect(gameBoard.tiles.length).toBe(100);
+  });
   describe('ship placement', () => {
-    test('should create a specified number of tiles', () => {
-      const gameBoard = GameBoard(10);
-
-      expect(gameBoard.tiles.length).toBe(100);
-    });
-
     test('should find a tile with specified coordinates', () => {
       const gameBoard = GameBoard(10);
 
@@ -94,6 +93,17 @@ describe('GameBoard', () => {
       expect(tile.ship).toBeTruthy();
       expect(invalidTile.ship).toBeNull();
     });
+
+    test('should not place ships right next to other ships', () => {
+      const gameBoard = GameBoard();
+      gameBoard.placeShip([2, 5], 3, 'right');
+      gameBoard.placeShip([3, 5], 3, 'right');
+
+      const tile = gameBoard.findTile([2, 5]);
+      const invalidTile = gameBoard.findTile([3, 5]);
+      expect(tile.ship).toBeTruthy();
+      expect(invalidTile.ship).toBeNull();
+    });
   });
 
   describe('receiving attacks', () => {
@@ -127,11 +137,11 @@ describe('GameBoard', () => {
     test('should be able to tell if all the ships are sunk', () => {
       const gameBoard = GameBoard();
       expect(gameBoard.isEverythingSunk()).toBeTruthy();
-      gameBoard.placeShip([2, 5], 3, 'right');
+      gameBoard.placeShip([1, 5], 3, 'right');
       gameBoard.placeShip([3, 5], 3, 'left');
-      gameBoard.receiveHit([2, 5]);
-      gameBoard.receiveHit([2, 6]);
-      gameBoard.receiveHit([2, 7]);
+      gameBoard.receiveHit([1, 5]);
+      gameBoard.receiveHit([1, 6]);
+      gameBoard.receiveHit([1, 7]);
       gameBoard.receiveHit([3, 5]);
       gameBoard.receiveHit([3, 4]);
       expect(gameBoard.isEverythingSunk()).toBeFalsy();

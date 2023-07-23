@@ -49,12 +49,12 @@ const GameBoard = (size = 10) => {
     return coordinates;
   };
 
-  const validateCoordinates = (coordinate, shipSize) => {
+  const validateCoordinates = (coordinate, boardSize) => {
     const valid =
       coordinate[0] >= 1 &&
-      coordinate[0] <= shipSize &&
+      coordinate[0] <= boardSize &&
       coordinate[1] >= 1 &&
-      coordinate[1] <= shipSize;
+      coordinate[1] <= boardSize;
 
     return valid;
   };
@@ -65,11 +65,44 @@ const GameBoard = (size = 10) => {
     attackedCoordinates: [],
     ships: [],
 
+    getAdjacentCoordinates(coordinates) {
+      const allAdjacentCoordinates = [
+        [coordinates[0] - 1, coordinates[1]],
+        [coordinates[0] - 1, coordinates[1] + 1],
+        [coordinates[0], coordinates[1] + 1],
+        [coordinates[0] + 1, coordinates[1] + 1],
+        [coordinates[0] + 1, coordinates[1]],
+        [coordinates[0] + 1, coordinates[1] - 1],
+        [coordinates[0], coordinates[1] - 1],
+        [coordinates[0] - 1, coordinates[1] - 1],
+      ];
+
+      const validAdjacentCoordinates = allAdjacentCoordinates.filter(
+        (coordinate) => validateCoordinates(coordinate, this.size)
+      );
+
+      return validAdjacentCoordinates;
+    },
+
+    checkForAdjacentShips(coordinates) {
+      const adjacentCoordinates = this.getAdjacentCoordinates(coordinates);
+      const isShipAdjacent = adjacentCoordinates.some((coordinate) => {
+        const tile = this.findTile(coordinate);
+        if (tile.ship) {
+          return true;
+        }
+        return false;
+      });
+
+      return isShipAdjacent;
+    },
+
     validateShipCoordinates(coordinates) {
       let valid = true;
       coordinates.forEach((coordinate) => {
         if (
           !validateCoordinates(coordinate, this.size) ||
+          this.checkForAdjacentShips(coordinate) ||
           this.findTile(coordinate).ship
         ) {
           valid = false;
