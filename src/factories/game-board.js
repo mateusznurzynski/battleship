@@ -108,6 +108,34 @@ const GameBoard = (size = 10) => {
       return true;
     },
 
+    placeShipRandomly(shipSize, direction) {
+      const remainingTiles = [...tiles];
+      let chosenCoordinates;
+
+      while (remainingTiles.length > 0 && !chosenCoordinates) {
+        const index = Math.floor(Math.random() * remainingTiles.length);
+        const headCoordinates = [
+          remainingTiles[index].row,
+          remainingTiles[index].column,
+        ];
+        const fullCoordinates = getShipCoordinates(
+          headCoordinates,
+          shipSize,
+          direction
+        );
+        const valid = this.validateShipCoordinates(fullCoordinates);
+
+        if (valid) {
+          chosenCoordinates = headCoordinates;
+        } else {
+          remainingTiles.splice(index, 1);
+        }
+      }
+
+      this.placeShip(chosenCoordinates, shipSize, direction);
+      return chosenCoordinates;
+    },
+
     validateHit(coordinates) {
       if (!validateCoordinates(coordinates, this.size)) {
         return false;

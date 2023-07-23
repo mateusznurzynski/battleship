@@ -8,23 +8,17 @@ import {
 
 const BOARD_SIZE = 10;
 const TURN_DELAY = 1000; // in ms
+const SHIP_SIZES = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
 
 let playerTurn = false;
 
 const humanPlayer = Player(true, BOARD_SIZE);
 const computerPlayer = Player(false, BOARD_SIZE);
 
-const populateBoards = () => {
-  // this function is just for testing purposes
-  const predeterminedCoordinates = [
-    [1, 1],
-    [2, 5],
-    [6, 2],
-  ];
-
-  predeterminedCoordinates.forEach((coordinates) => {
-    humanPlayer.gameBoard.placeShip(coordinates, 3, 'right');
-    computerPlayer.gameBoard.placeShip(coordinates, 3, 'right');
+const populateComputerBoard = () => {
+  SHIP_SIZES.forEach((size) => {
+    const direction = ['down', 'right'][Math.floor(Math.random() * 2)];
+    computerPlayer.gameBoard.placeShipRandomly(size, direction);
   });
 };
 
@@ -97,8 +91,8 @@ const initPubSub = () => {
 };
 
 const gameStart = () => {
+  populateComputerBoard();
   initPubSub();
-  populateBoards();
   renderGameBoards(humanPlayer.gameBoard, computerPlayer.gameBoard);
   toggleTileEventListeners(true);
 
