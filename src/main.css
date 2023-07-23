@@ -91,6 +91,19 @@ body {
 .tile[ship='attacked'] {
   background-color: rgba(255, 0, 0, 0.65);
 }
+.tile[ship='destroyed'] {
+  background-image: linear-gradient(
+    45deg,
+    #000000 25%,
+    #ff0000 25%,
+    #ff0000 50%,
+    #000000 50%,
+    #000000 75%,
+    #ff0000 75%,
+    #ff0000 100%
+  );
+  background-size: 11.31px 11.31px;
+}
 
 .tile[attacked]::after {
   content: 'X';

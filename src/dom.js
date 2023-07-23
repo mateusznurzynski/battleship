@@ -46,6 +46,9 @@ const createTileElement = (tile, showShips = false) => {
     tileElement.toggleAttribute('attacked', true);
     if (tile.ship) {
       tileElement.setAttribute('ship', 'attacked');
+      if (tile.ship.sunk) {
+        tileElement.setAttribute('ship', 'destroyed');
+      }
     }
   } else if (showShips) {
     if (tile.ship) {
