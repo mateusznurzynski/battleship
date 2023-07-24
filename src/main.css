@@ -64,24 +64,33 @@ body {
 .tile {
   height: var(--tile-size);
   width: var(--tile-size);
-  border: 1px white solid;
   position: relative;
 }
 
 .gameboard-player .tile {
-  border-color: var(--success);
+  box-shadow: 2px 0 0 0 var(--success), 0 2px 0 0 var(--success),
+    2px 2px 0 0 var(--success), 2px 0 0 0 var(--success) inset,
+    0 2px 0 0 var(--success) inset;
 }
 
 .gameboard-player .tile:hover {
-  border-color: greenyellow;
+  z-index: 1;
+  box-shadow: 2px 0 0 0 greenyellow, 0 2px 0 0 greenyellow,
+    2px 2px 0 0 greenyellow, 2px 0 0 0 greenyellow inset,
+    0 2px 0 0 greenyellow inset;
 }
 
 .gameboard-computer .tile {
-  border-color: var(--danger);
+  cursor: pointer;
+  box-shadow: 2px 0 0 0 var(--danger), 0 2px 0 0 var(--danger),
+    2px 2px 0 0 var(--danger), 2px 0 0 0 var(--danger) inset,
+    0 2px 0 0 var(--danger) inset;
 }
 
 .gameboard-computer .tile:hover {
-  border-color: orange;
+  z-index: 1;
+  box-shadow: 2px 0 0 0 orange, 0 2px 0 0 orange, 2px 2px 0 0 orange,
+    2px 0 0 0 orange inset, 0 2px 0 0 orange inset;
 }
 
 .tile[ship='alive'] {
@@ -104,22 +113,38 @@ body {
   background-size: 11.31px 11.31px;
 }
 
-.tile[attacked]::after {
-  content: 'X';
-  font-weight: bold;
-  color: white;
-  width: 100%;
+.tile[attacked] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+}
+.tile[attacked]::before {
+  content: '';
+  height: var(--tile-size);
+  border-left: 2px solid #fff;
+  position: absolute;
+  transform: rotate(45deg);
+  left: calc(var(--tile-size) / 2);
+}
+.tile[attacked]::after {
+  content: '';
+  height: var(--tile-size);
+  border-left: 2px solid #fff;
+  position: absolute;
+  transform: rotate(-45deg);
+  left: calc(var(--tile-size) / 2);
 }
 
 .tile[placing] > .highlight {
   position: absolute;
-  top: -1px;
-  left: -1px;
+  top: 1px;
+  left: 1px;
   font-weight: bold;
   color: white;
   height: var(--tile-size);
   width: var(--tile-size);
   background-color: cyan;
   pointer-events: none;
+  z-index: 1;
 }
