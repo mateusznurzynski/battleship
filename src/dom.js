@@ -93,4 +93,50 @@ const renderGameBoards = (playerBoard, computerBoard, gridSize = 10) => {
   gameBoardsElement.appendChild(computerGameBoardElement);
 };
 
-export { renderGameBoards, toggleTileEventListeners, changeStatus };
+const renderInitGameBoard = (
+  gameBoard,
+  placedShipSize,
+  placedShipDirection,
+  gridSize
+) => {
+  gameBoardsElement.innerHTML = '';
+  const playerTiles = gameBoard.tiles;
+  const playerGameBoardElement = createDomElement(
+    'div',
+    'gameboard gameboard-player gameboard-init'
+  );
+  const shipHighlightElement = createDomElement('div', 'highlight');
+
+  playerTiles.forEach((tile) => {
+    const tileElement = createTileElement(tile, true);
+    tileElement.addEventListener('mouseenter', () => {
+      tileElement.toggleAttribute('placing', true);
+      const highlight = shipHighlightElement.cloneNode(true);
+      if (placedShipDirection === 'right') {
+        highlight.style.width = `calc(var(--tile-size)*${placedShipSize})`;
+      } else if (placedShipDirection === 'down') {
+        highlight.style.height = `calc(var(--tile-size)*${placedShipSize})`;
+      }
+      tileElement.appendChild(highlight);
+    });
+    tileElement.addEventListener('mouseleave', () => {
+      tileElement.toggleAttribute('placing', false);
+      tileElement.innerHTML = '';
+    });
+
+    tileElement.addEventListener('click', () => {
+      PubSub.publish('playerTileClicked', [tile.row, tile.column]);
+    });
+    playerGameBoardElement.appendChild(tileElement);
+  });
+
+  gameBoardsElement.appendChild(playerGameBoardElement);
+  playerGameBoardElement.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+};
+
+export {
+  renderGameBoards,
+  toggleTileEventListeners,
+  changeStatus,
+  renderInitGameBoard,
+};

@@ -8,7 +8,7 @@ import {
 
 const BOARD_SIZE = 10;
 const TURN_DELAY = 1000; // in ms
-const SHIP_SIZES = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
+const COMPUTER_SHIP_SIZES = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
 
 let playerTurn = false;
 
@@ -16,7 +16,7 @@ const humanPlayer = Player(true, BOARD_SIZE);
 const computerPlayer = Player(false, BOARD_SIZE);
 
 const populateComputerBoard = () => {
-  SHIP_SIZES.forEach((size) => {
+  COMPUTER_SHIP_SIZES.forEach((size) => {
     const direction = ['down', 'right'][Math.floor(Math.random() * 2)];
     computerPlayer.gameBoard.placeShipRandomly(size, direction);
   });

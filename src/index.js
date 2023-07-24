@@ -1,5 +1,5 @@
 import './main.css';
 import './img/background.jpg';
-import gameStart from './game-loop';
+import initGame from './game-init';
 
-gameStart();
+initGame();
