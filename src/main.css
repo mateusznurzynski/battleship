@@ -46,12 +46,22 @@ body {
   padding: 15px;
 }
 
-.title {
-  font-size: 3rem;
+.status {
+  font-size: 2.5rem;
+  margin-bottom: 50px;
+}
+
+.axis-button {
+  margin-bottom: 15px;
+  background-color: var(--info);
+  color: white;
+  padding: 7px;
+  cursor: pointer;
+  border-radius: 5px;
+  display: none;
 }
 
 .gameboards {
-  margin-top: 50px;
   display: flex;
   width: 100%;
   justify-content: space-evenly;

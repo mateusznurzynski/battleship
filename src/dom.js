@@ -2,6 +2,10 @@ import PubSub from 'pubsub-js';
 
 const gameBoardsElement = document.querySelector('.gameboards');
 const statusElement = document.querySelector('.status');
+const axisButtonElement = document.querySelector('.axis-button');
+axisButtonElement.addEventListener('click', () => {
+  PubSub.publish('axisChanged');
+});
 
 const handleEnemyTileClick = (e) => {
   PubSub.publish('enemyTileClicked', {
@@ -88,6 +92,7 @@ const renderGameBoards = (playerBoard, computerBoard, gridSize = 10) => {
 
   playerGameBoardElement.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
   computerGameBoardElement.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+  axisButtonElement.style.display = 'none';
 
   gameBoardsElement.appendChild(playerGameBoardElement);
   gameBoardsElement.appendChild(computerGameBoardElement);
@@ -129,9 +134,10 @@ const renderInitGameBoard = (
     });
     playerGameBoardElement.appendChild(tileElement);
   });
+  playerGameBoardElement.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+  axisButtonElement.style.display = 'flex';
 
   gameBoardsElement.appendChild(playerGameBoardElement);
-  playerGameBoardElement.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
 };
 
 export {

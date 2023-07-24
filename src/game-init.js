@@ -13,6 +13,16 @@ let currentShipSize = HUMAN_SHIP_SIZES[currentShipSizeIndex];
 let currentShipDirection = 'right';
 
 const initPubSub = () => {
+  PubSub.subscribe('axisChanged', () => {
+    currentShipDirection = currentShipDirection === 'right' ? 'down' : 'right';
+    renderInitGameBoard(
+      humanPlayer.gameBoard,
+      currentShipSize,
+      currentShipDirection,
+      BOARD_SIZE
+    );
+  });
+
   PubSub.subscribe('playerTileClicked', (msg, data) => {
     const shipAdded = humanPlayer.gameBoard.placeShip(
       data,
