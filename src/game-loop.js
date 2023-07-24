@@ -12,7 +12,7 @@ const COMPUTER_SHIP_SIZES = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
 
 let playerTurn = false;
 
-const humanPlayer = Player(true, BOARD_SIZE);
+let humanPlayer;
 const computerPlayer = Player(false, BOARD_SIZE);
 
 const populateComputerBoard = () => {
@@ -90,7 +90,8 @@ const initPubSub = () => {
   });
 };
 
-const gameStart = () => {
+const gameStart = (newHumanPlayer) => {
+  humanPlayer = newHumanPlayer;
   populateComputerBoard();
   initPubSub();
   renderGameBoards(humanPlayer.gameBoard, computerPlayer.gameBoard);

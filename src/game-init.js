@@ -1,6 +1,7 @@
 import PubSub from 'pubsub-js';
 import { changeStatus, renderInitGameBoard } from './dom';
 import Player from './factories/player';
+import gameStart from './game-loop';
 
 const HUMAN_SHIP_SIZES = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
 const BOARD_SIZE = 10;
@@ -28,6 +29,11 @@ const initPubSub = () => {
         currentShipDirection,
         BOARD_SIZE
       );
+    }
+
+    if (!currentShipSize) {
+      PubSub.clearAllSubscriptions();
+      gameStart(humanPlayer);
     }
   });
 };
