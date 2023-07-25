@@ -85,8 +85,7 @@ const renderGameBoards = (playerBoard, computerBoard, gridSize = 10) => {
     'gameboard gameboard-computer'
   );
   computerTiles.forEach((tile) => {
-    const tileElement = createTileElement(tile, true);
-    // for now the player can see all ships
+    const tileElement = createTileElement(tile, false);
     computerGameBoardElement.appendChild(tileElement);
   });
 
